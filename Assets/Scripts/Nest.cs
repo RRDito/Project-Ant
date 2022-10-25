@@ -16,7 +16,7 @@ public class Nest : MonoBehaviour
     void Update()
     {
 		GameObject[] AllTheAnts = GameObject.FindGameObjectsWithTag("Ant");
-		if (AllTheAnts.Length < 1)
+		if (AllTheAnts.Length < 50)
 		{
 			GameObject Ant = Instantiate(ant, new Vector3(0,0,10), Quaternion.identity, GameObject.FindGameObjectWithTag("Canvas").transform);
 		}       
