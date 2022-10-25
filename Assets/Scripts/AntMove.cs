@@ -5,20 +5,26 @@ using UnityEngine;
 public class AntMove : MonoBehaviour
 {
 	public Vector3 direction;
+	public Vector3 target;
+	
 	
 	public GameObject Nest;
 	
+		
     // Start is called before the first frame update
     void Start()
     {
-        //this.transform.position = Nest.transform.position;		
+        transform.Rotate (Vector3.forward * Random.Range(-180.0f, 180.0f));		
     }
 
     // Update is called once per frame
     void Update()
     {
-        direction = new Vector3(Random.Range(-1.0f, 1.0f),Random.Range(-1.0f, 1.0f),0);
-		//Debug.Log(direction);
-		this.transform.position += direction * 20f * Time.deltaTime;
+		target = new Vector3 (transform.up.x, transform.up.y, this.transform.position.z);
+		direction = target - this.transform.position;
+		//transform.up
+		this.transform.position += (direction.normalized*0.5f*Time.deltaTime);
+		transform.Rotate (Vector3.forward * Random.Range(-15.0f, 15.0f) * 80f * Time.deltaTime);		
+		
     }
 }
