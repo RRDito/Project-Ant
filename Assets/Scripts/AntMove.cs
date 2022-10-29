@@ -28,15 +28,14 @@ public class AntMove : MonoBehaviour
 	
 		
 	void AntMovement()
-	{
-		bool MoveReady = false;
+	{		
 		//Locate Food Object
 		GameObject FoodObject = GameObject.FindWithTag("Food");
-		//Calculate the current distance between the ant and the food
-		float CurrentDistance = Vector3.Distance(this.transform.position, FoodObject.transform.position);
+		//Calculate the current distance between the ant and the food		
+		float CurrentDistance = Vector3.Distance(this.transform.position, FoodObject.transform.position);		
 		
-		Debug.Log(CurrentDistance);
-		while (MoveReady == false)
+        int i = 0;		
+		while (i < 10)
 		{
 			if (isNearEdge() == true) //facing in a fixed direction if its near edge
 			{			
@@ -49,10 +48,9 @@ public class AntMove : MonoBehaviour
 			//move forward evaluation
 			Vector3 EvalPoint = this.transform.position + (transform.up*moveSpeed*Time.deltaTime);
 			//check if its closer
-			float NewDistance = Vector3.Distance(this.transform.position, EvalPoint);
-			
-			//Move if NewDistance is closer
-			if (NewDistance < CurrentDistance){MoveReady = true;}	
+			float NewDistance = Vector3.Distance(EvalPoint, FoodObject.transform.position);			
+			//Move if NewDistance is closer			
+			if (NewDistance < CurrentDistance){i = 10;}  else {i++;}	
 		}
 
 		this.transform.position += (transform.up*moveSpeed*Time.deltaTime);	
