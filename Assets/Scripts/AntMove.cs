@@ -4,21 +4,62 @@ using UnityEngine;
 
 public class AntMove : MonoBehaviour
 {
-	public Vector3 direction;
-	
+	private float moveSpeed = 0.5f;
+	private RectTransform r; 
+		
 	public GameObject Nest;
 	
+		
     // Start is called before the first frame update
     void Start()
-    {
-        //this.transform.position = Nest.transform.position;		
+    {   
+	    r = this.GetComponent<RectTransform>();
+		//transform.position = new Vector3(transform.position.x, transform.position.y, 10);	
+        transform.Rotate (Vector3.forward * Random.Range(-180.0f, 180.0f));		
     }
 
+    bool isNearEdge()
+	{
+		
+		if ( (r.localPosition.x > 475.0f) || (r.localPosition.x < -475.0f) ) {return true;}
+		else if ( (r.localPosition.y > 265.0f) || (r.localPosition.y < -265.0f) ) {return true;}
+		else {return false;}
+	}
+	
+		
+	void AntMovement()
+	{		
+		//Locate Food Object
+		GameObject FoodObject = GameObject.FindWithTag("Food");
+		//Calculate the current distance between the ant and the food		
+		float CurrentDistance = Vector3.Distance(this.transform.position, FoodObject.transform.position);		
+		
+        int i = 0;		
+		while (i < 10)
+		{
+			if (isNearEdge() == true) //facing in a fixed direction if its near edge
+			{			
+				transform.Rotate (Vector3.forward * Random.Range(0.0f, 15.0f) * 80f * Time.deltaTime);
+			}		
+			else   //Random facing in a 30 degree
+			{ 
+				transform.Rotate (Vector3.forward * Random.Range(-15.0f, 15.0f) * 80f * Time.deltaTime);
+			}		
+			//move forward evaluation
+			Vector3 EvalPoint = this.transform.position + (transform.up*moveSpeed*Time.deltaTime);
+			//check if its closer
+			float NewDistance = Vector3.Distance(EvalPoint, FoodObject.transform.position);			
+			//Move if NewDistance is closer			
+			if (NewDistance < CurrentDistance){i = 10;}  else {i++;}	
+		}
+
+		this.transform.position += (transform.up*moveSpeed*Time.deltaTime);	
+	}
+	
+	
     // Update is called once per frame
     void Update()
-    {
-        direction = new Vector3(Random.Range(-1.0f, 1.0f),Random.Range(-1.0f, 1.0f),0);
-		//Debug.Log(direction);
-		this.transform.position += direction * 20f * Time.deltaTime;
+    {		
+		AntMovement();		
     }
 }
